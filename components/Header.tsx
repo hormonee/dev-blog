@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
+import { logout } from "@/app/login/actions";
 
 export default async function Header() {
     const supabase = await createClient();
@@ -19,7 +20,7 @@ export default async function Header() {
                         <span className="text-xl font-bold text-white tracking-tight">DevBlog</span>
                     </Link>
                     <nav className="hidden md:flex items-center gap-6">
-                        <Link href="#" className="text-sm font-medium text-white transition-colors hover:text-blue-400">Articles</Link>
+                        <Link href="/" className="text-sm font-medium text-white transition-colors hover:text-blue-400">Articles</Link>
                         <Link href="#" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">Topics</Link>
                         <Link href="#" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">Showcase</Link>
                         <Link href="#" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">About</Link>
@@ -43,7 +44,7 @@ export default async function Header() {
 
                     <div className="flex items-center gap-4">
                         {user ? (
-                            <form action="/auth/signout" method="post">
+                            <form action={logout}>
                                 <button type="submit" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">
                                     Log out
                                 </button>

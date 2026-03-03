@@ -6,6 +6,7 @@ import Hero, { Post } from "@/components/Hero";
 import CategoryFilter from "@/components/CategoryFilter";
 import PostCard from "@/components/PostCard";
 import Pagination from "@/components/Pagination";
+import Link from "next/link";
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -13,11 +14,21 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [postsPerPage, setPostsPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // 카테고리 필터나 페이지당 개수가 변경되면 1페이지로 돌아갑니다.
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, postsPerPage]);
+
+  useEffect(() => {
+    async function checkAuth() {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      setIsLoggedIn(!!user);
+    }
+    checkAuth();
+  }, []);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -48,7 +59,7 @@ export default function Home() {
 
         setPosts(filteredData as Post[]);
       } else {
-        console.error("Error fetching posts:", error);
+        setPosts([]);
       }
 
       setLoading(false);
@@ -86,6 +97,14 @@ export default function Home() {
 
           <div className="flex justify-end mb-6">
             <div className="flex items-center gap-3">
+              {isLoggedIn && (
+                <Link
+                  href="/write"
+                  className="rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+                >
+                  ✏️ 글쓰기
+                </Link>
+              )}
               <span className="text-sm text-slate-400">게시물 표시:</span>
               <select
                 value={postsPerPage}

@@ -8,21 +8,27 @@ import { useRouter } from 'next/navigation'
 const initialState = {
     success: false,
     error: '',
-    email: ''
+    email: '',
+    nickname: ''
 }
 
 export default function SignupForm() {
     const [state, formAction, isPending] = useActionState(signup, initialState)
     const [isPasswordFocused, setIsPasswordFocused] = useState(false)
+    const [isNicknameFocused, setIsNicknameFocused] = useState(false)
     const [passwordValue, setPasswordValue] = useState('')
     const [emailValue, setEmailValue] = useState('')
+    const [nicknameValue, setNicknameValue] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const router = useRouter()
 
-    // 서버액션 결과에 email이 반환되면 반영 (입력값 유지 버그 방지)
+    // 서버액션 결과에 email 값이 반환되면 반영
     useEffect(() => {
         if (state?.email !== undefined && state?.email !== '') {
             setEmailValue(state.email)
+        }
+        if (state?.nickname !== undefined && state?.nickname !== '') {
+            setNicknameValue(state.nickname)
         }
     }, [state])
 
@@ -32,6 +38,12 @@ export default function SignupForm() {
     const hasNumber = /\d/.test(passwordValue)
     const hasSpecialChar = /[~!@#$%^&*()_+\-={}\[\]\\|:;"'<>,.?\/]/.test(passwordValue)
     const isValidLength = passwordValue.length >= 8 && passwordValue.length <= 16
+
+    // 닉네임 규칙 검증
+    const nicknameByteLength = [...nicknameValue].reduce((acc, ch) => acc + (/[\u3131-\u318E\uAC00-\uD7A3]/.test(ch) ? 2 : 1), 0)
+    const isNicknameValidLength = nicknameValue.length > 0 && nicknameByteLength <= 16
+    const hasNoSpecialChar = nicknameValue.length === 0 || /^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+$/.test(nicknameValue)
+    const hasNoSpace = !nicknameValue.includes(' ')
 
     return (
         <div className="w-full max-w-md mx-auto p-8 rounded-2xl bg-[#1e2330] shadow-xl border border-gray-800 relative">
@@ -106,6 +118,39 @@ export default function SignupForm() {
                                 </li>
                                 <li className={`flex items-center gap-2 ${isValidLength ? 'text-green-400' : 'text-gray-500'}`}>
                                     {isValidLength ? '✓' : '○'} 8~16자 이내
+                                </li>
+                            </ul>
+                        </div>
+                    )}
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Nickname</label>
+                    <input
+                        type="text"
+                        name="nickname"
+                        value={nicknameValue}
+                        onChange={(e) => setNicknameValue(e.target.value)}
+                        onFocus={() => setIsNicknameFocused(true)}
+                        onBlur={() => setIsNicknameFocused(false)}
+                        maxLength={16}
+                        placeholder="Your display name"
+                        required
+                        className="w-full px-4 py-3 rounded-lg bg-[#151923] border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                    />
+
+                    {(isNicknameFocused || nicknameValue.length > 0) && (
+                        <div className="mt-3 p-4 bg-[#151923] rounded-lg border border-gray-700 text-sm transition-all duration-300 ease-in-out">
+                            <p className="text-gray-300 mb-2 font-medium">닉네임 규칙:</p>
+                            <ul className="space-y-1.5 text-xs">
+                                <li className={`flex items-center gap-2 ${isNicknameValidLength ? 'text-green-400' : 'text-gray-500'}`}>
+                                    {isNicknameValidLength ? '✓' : '○'} 한글 8자리 이하 (영문 16자리 이하)
+                                </li>
+                                <li className={`flex items-center gap-2 ${hasNoSpecialChar ? 'text-green-400' : 'text-gray-500'}`}>
+                                    {hasNoSpecialChar ? '✓' : '○'} 특수문자 금지
+                                </li>
+                                <li className={`flex items-center gap-2 ${hasNoSpace ? 'text-green-400' : 'text-gray-500'}`}>
+                                    {hasNoSpace ? '✓' : '○'} 공백 금지
                                 </li>
                             </ul>
                         </div>

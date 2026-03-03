@@ -41,7 +41,17 @@ export default function Hero({ post }: HeroProps) {
                         {post.title}
                     </h2>
                     <p className="mb-8 text-lg text-slate-300 leading-relaxed max-w-lg line-clamp-3">
-                        {post.content}
+                        {post.content
+                            .replace(/^#{1,6}\s+/gm, '')
+                            .replace(/(\*\*|__)(.*?)\1/g, '$2')
+                            .replace(/(\*|_)(.*?)\1/g, '$2')
+                            .replace(/`{1,3}[^`]*`{1,3}/g, '')
+                            .replace(/^\s*[-*+]\s+/gm, '')
+                            .replace(/^\s*>\s+/gm, '')
+                            .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+                            .replace(/!\[([^\]]*)\]\([^)]*\)/g, '')
+                            .trim()
+                        }
                     </p>
 
                     <div className="flex items-center justify-between">

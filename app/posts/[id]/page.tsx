@@ -5,15 +5,13 @@ import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import ShareButtons from "./ShareButtons";
+import PostActions from "./PostActions";
 import PostCard from "@/components/PostCard";
 import CommentSection from "@/components/CommentSection";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
-// 더미 저자 데이터 (DB 스키마에 없으므로 시안 구현용으로 작성)
-const DUMMY_AUTHOR = {
-    name: "Sarah Jenkins",
-    avatar: "https://i.pravatar.cc/150?u=sarah",
-    readTime: "8 min read"
-};
+
 
 interface PostDetailPageProps {
     params: {
@@ -35,6 +33,17 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 
     if (error || !post) {
         notFound();
+    }
+
+    // post.nickname이 없으면 (마이그레이션 전 게시글) profiles 테이블에서 닉네임을 조회
+    let authorNickname = post.nickname;
+    if (!authorNickname && post.user_id) {
+        const { data: authorProfile } = await supabase
+            .from("profiles")
+            .select("nickname")
+            .eq("id", post.user_id)
+            .single();
+        authorNickname = authorProfile?.nickname || null;
     }
 
     // 전체 포스트 ID를 생성일과 ID 기준 내림차순(최신순)으로 조회하여 정렬 순서를 확보합니다.
@@ -75,6 +84,9 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
         }
     }
 
+    // 현재 로그인 유저 확인
+    const { data: { user } } = await supabase.auth.getUser();
+
     // 작성된 댓글 조회 (과거순 정렬)
     const { data: comments } = await supabase
         .from("comments")
@@ -84,12 +96,27 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 
     return (
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 mt-8">
-            <Link
-                href="/"
-                className="inline-flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors mb-8"
-            >
-                <ArrowLeft className="h-4 w-4" /> Back to Home
-            </Link>
+            <div className="flex items-center justify-between mb-8">
+                <Link
+                    href="/"
+                    className="inline-flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors"
+                >
+                    <ArrowLeft className="h-4 w-4" /> Back to Home
+                </Link>
+                {user && (
+                    <div className="flex items-center gap-3">
+                        {user.id === post.user_id && (
+                            <PostActions postId={id} />
+                        )}
+                        <Link
+                            href="/write"
+                            className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+                        >
+                            ✏️ 글쓰기
+                        </Link>
+                    </div>
+                )}
+            </div>
 
             <article>
                 <header className="mb-10">
@@ -107,21 +134,15 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 
                     <div className="flex items-center justify-between border-b border-white/10 pb-8">
                         <div className="flex items-center gap-4">
-                            <Image
-                                src={DUMMY_AUTHOR.avatar}
-                                alt={DUMMY_AUTHOR.name}
-                                width={48}
-                                height={48}
-                                className="rounded-full object-cover ring-2 ring-slate-800"
-                            />
+                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-600/20 ring-2 ring-slate-800 text-blue-400 font-bold text-lg">
+                                {(authorNickname || '?')[0].toUpperCase()}
+                            </div>
                             <div>
                                 <div className="font-semibold text-white text-base">
-                                    {DUMMY_AUTHOR.name}
+                                    {authorNickname || '익명'}
                                 </div>
                                 <div className="flex items-center gap-2 text-sm text-slate-400 mt-0.5">
                                     <span>{post.created_at ? format(new Date(post.created_at), 'MMM dd, yyyy') : ''}</span>
-                                    <span>•</span>
-                                    <span>{DUMMY_AUTHOR.readTime}</span>
                                 </div>
                             </div>
                         </div>
@@ -142,14 +163,16 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
                     </div>
                 )}
 
-                <div className="prose prose-invert prose-lg max-w-none prose-p:leading-relaxed prose-p:text-slate-300 prose-headings:text-white prose-a:text-blue-400 hover:prose-a:text-blue-300 prose-img:rounded-xl">
-                    <p className="whitespace-pre-wrap">{post.content}</p>
+                <div className="prose prose-invert prose-lg max-w-none prose-p:leading-relaxed prose-p:text-slate-300 prose-headings:text-white prose-headings:font-bold prose-a:text-blue-400 hover:prose-a:text-blue-300 prose-img:rounded-xl prose-li:text-slate-300 prose-strong:text-white prose-code:text-blue-300">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {post.content}
+                    </ReactMarkdown>
                 </div>
             </article>
 
             {/* 댓글 영역 */}
             <div className="mt-16">
-                <CommentSection postId={id} initialComments={comments || []} />
+                <CommentSection postId={id} initialComments={comments || []} currentUserId={user?.id || null} />
             </div>
 
             {relatedPosts.length > 0 && (

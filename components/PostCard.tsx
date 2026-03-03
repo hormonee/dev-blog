@@ -43,7 +43,17 @@ export default function PostCard({ post }: PostCardProps) {
                 </h3>
 
                 <p className="mb-6 flex-1 text-sm text-slate-400 leading-relaxed line-clamp-3">
-                    {post.content}
+                    {post.content
+                        .replace(/^#{1,6}\s+/gm, '')
+                        .replace(/(\*\*|__)(.*?)\1/g, '$2')
+                        .replace(/(\*|_)(.*?)\1/g, '$2')
+                        .replace(/`{1,3}[^`]*`{1,3}/g, '')
+                        .replace(/^\s*[-*+]\s+/gm, '')
+                        .replace(/^\s*>\s+/gm, '')
+                        .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+                        .replace(/!\[([^\]]*)\]\([^)]*\)/g, '')
+                        .trim()
+                    }
                 </p>
             </div>
         </Link>

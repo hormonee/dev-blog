@@ -6,14 +6,20 @@ import { addComment, updateComment, deleteComment } from "@/app/actions/comments
 
 export interface CommentType {
     id: string;
+    user_id: string | null;
     author_name: string;
     content: string;
     created_at: string;
 }
 
-export default function CommentSection({ postId, initialComments }: { postId: string, initialComments: CommentType[] }) {
+interface Props {
+    postId: string;
+    initialComments: CommentType[];
+    currentUserId: string | null;
+}
+
+export default function CommentSection({ postId, initialComments, currentUserId }: Props) {
     const [editingId, setEditingId] = useState<string | null>(null);
-    const [deletingId, setDeletingId] = useState<string | null>(null);
     const [errorMsg, setErrorMsg] = useState("");
 
     const handleAdd = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,13 +40,11 @@ export default function CommentSection({ postId, initialComments }: { postId: st
         else setEditingId(null);
     };
 
-    const handleDelete = async (e: React.FormEvent<HTMLFormElement>, commentId: string) => {
-        e.preventDefault();
+    const handleDelete = async (commentId: string) => {
+        if (!confirm("정말 삭제하시겠습니까?")) return;
         setErrorMsg("");
-        const formData = new FormData(e.currentTarget);
-        const res = await deleteComment(commentId, postId, formData);
+        const res = await deleteComment(commentId, postId);
         if (res?.error) setErrorMsg(res.error);
-        else setDeletingId(null);
     };
 
     return (
@@ -59,30 +63,21 @@ export default function CommentSection({ postId, initialComments }: { postId: st
                                     {format(new Date(comment.created_at), 'yyyy.MM.dd HH:mm')}
                                 </span>
                             </div>
-                            <div className="flex gap-3 text-xs">
-                                <button type="button" onClick={() => { setEditingId(comment.id); setDeletingId(null); setErrorMsg(""); }} className="text-slate-400 hover:text-blue-400 transition-colors">수정</button>
-                                <button type="button" onClick={() => { setDeletingId(comment.id); setEditingId(null); setErrorMsg(""); }} className="text-slate-400 hover:text-red-400 transition-colors">삭제</button>
-                            </div>
+                            {/* 본인 댓글만 수정/삭제 가능 */}
+                            {currentUserId && comment.user_id === currentUserId && (
+                                <div className="flex gap-3 text-xs">
+                                    <button type="button" onClick={() => { setEditingId(comment.id); setErrorMsg(""); }} className="text-slate-400 hover:text-blue-400 transition-colors">수정</button>
+                                    <button type="button" onClick={() => handleDelete(comment.id)} className="text-slate-400 hover:text-red-400 transition-colors">삭제</button>
+                                </div>
+                            )}
                         </div>
 
                         {editingId === comment.id ? (
                             <form onSubmit={(e) => handleUpdate(e, comment.id)} className="mt-3 flex flex-col gap-3 bg-slate-800/50 p-4 rounded-xl border border-white/5">
                                 <textarea name="content" defaultValue={comment.content} required rows={3} className="w-full bg-[#131722] border border-white/10 rounded-lg p-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500/50 resize-y" />
-                                <div className="flex sm:items-center sm:flex-row flex-col gap-3">
-                                    <input type="password" name="password" required placeholder="비밀번호" className="flex-1 bg-[#131722] border border-white/10 rounded-lg p-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500/50 sm:max-w-[200px]" />
-                                    <div className="flex flex-1 gap-2">
-                                        <button type="submit" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors">저장</button>
-                                        <button type="button" onClick={() => setEditingId(null)} className="bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors">취소</button>
-                                    </div>
-                                </div>
-                            </form>
-                        ) : deletingId === comment.id ? (
-                            <form onSubmit={(e) => handleDelete(e, comment.id)} className="mt-3 flex flex-col sm:flex-row sm:items-center gap-3 bg-red-500/10 p-4 rounded-xl border border-red-500/20">
-                                <span className="text-sm text-red-400 font-medium">정말 삭제하시겠습니까?</span>
-                                <input type="password" name="password" required placeholder="비밀번호 확인" className="flex-1 bg-[#131722] border border-red-500/30 rounded-lg p-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-red-500/50 sm:max-w-[200px]" />
                                 <div className="flex gap-2">
-                                    <button type="submit" className="bg-red-600 hover:bg-red-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors">삭제</button>
-                                    <button type="button" onClick={() => setDeletingId(null)} className="bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors">취소</button>
+                                    <button type="submit" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors">저장</button>
+                                    <button type="button" onClick={() => setEditingId(null)} className="bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors">취소</button>
                                 </div>
                             </form>
                         ) : (
@@ -97,19 +92,22 @@ export default function CommentSection({ postId, initialComments }: { postId: st
                 )}
             </div>
 
-            <form onSubmit={handleAdd} className="mt-8 pt-8 border-t border-white/10 flex flex-col gap-4">
-                <h4 className="text-lg font-medium text-white mb-2">새 댓글 작성</h4>
-                <div className="flex gap-4 sm:flex-row flex-col">
-                    <input type="text" name="author_name" required placeholder="본명 또는 닉네임" className="flex-1 bg-slate-800 border border-white/10 rounded-xl p-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500/50" />
-                    <input type="password" name="password" required placeholder="비밀번호 (수정/삭제 시 필요)" className="flex-1 bg-slate-800 border border-white/10 rounded-xl p-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500/50" />
+            {/* 로그인한 사용자만 댓글 작성 가능 */}
+            {currentUserId ? (
+                <form onSubmit={handleAdd} className="mt-8 pt-8 border-t border-white/10 flex flex-col gap-4">
+                    <h4 className="text-lg font-medium text-white mb-2">새 댓글 작성</h4>
+                    <textarea name="content" required placeholder="건전하고 유익한 댓글을 남겨주세요." rows={4} className="w-full bg-slate-800 border border-white/10 rounded-xl p-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500/50 resize-y" />
+                    <div className="flex justify-end mt-2">
+                        <button type="submit" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium py-3 px-6 rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/25 active:scale-[0.98]">
+                            댓글 등록
+                        </button>
+                    </div>
+                </form>
+            ) : (
+                <div className="mt-8 pt-8 border-t border-white/10 text-center">
+                    <p className="text-slate-400 text-sm">댓글을 작성하려면 <a href="/login" className="text-blue-400 hover:text-blue-300 font-medium">로그인</a>해주세요.</p>
                 </div>
-                <textarea name="content" required placeholder="건전하고 유익한 댓글을 남겨주세요." rows={4} className="w-full bg-slate-800 border border-white/10 rounded-xl p-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500/50 resize-y" />
-                <div className="flex justify-end mt-2">
-                    <button type="submit" className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium py-3 px-6 rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/25 active:scale-[0.98]">
-                        댓글 등록
-                    </button>
-                </div>
-            </form>
+            )}
         </section>
     );
 }
