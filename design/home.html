@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DevBlog Homepage</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#256af4",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#0f172a", // Darker slate
+                        "surface-dark": "#1e293b", // Slate 800
+                        "border-dark": "#334155", // Slate 700
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-border-dark bg-white/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16 gap-4">
+<!-- Logo -->
+<div class="flex items-center gap-2 text-primary shrink-0">
+<span class="material-symbols-outlined text-3xl">terminal</span>
+<span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">DevBlog</span>
+</div>
+<!-- Desktop Nav Links -->
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Articles</a>
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Topics</a>
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Showcase</a>
+<a class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">About</a>
+</nav>
+<!-- Search Bar (Centered visually in flex grow) -->
+<div class="hidden sm:flex flex-1 max-w-md mx-4">
+<div class="relative w-full group">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="block w-full rounded-lg border-0 py-2 pl-10 pr-3 text-slate-900 ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-primary dark:bg-surface-dark dark:text-slate-200 dark:ring-border-dark sm:text-sm sm:leading-6 transition-all" placeholder="Search articles, tags..." type="text"/>
+<div class="absolute inset-y-0 right-0 flex items-center pr-2">
+<kbd class="inline-flex items-center rounded border border-slate-200 dark:border-slate-700 px-1 font-sans text-xs text-slate-400 dark:text-slate-500">⌘K</kbd>
+</div>
+</div>
+</div>
+<!-- Auth Buttons -->
+<div class="flex items-center gap-3 shrink-0">
+<button class="hidden sm:flex text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                        Log in
+                    </button>
+<button class="flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-colors">
+                        Sign up
+                    </button>
+<!-- Mobile Menu Button -->
+<button class="sm:hidden p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-surface-dark rounded-md">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow">
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<!-- Hero / Featured Section -->
+<div class="mb-16">
+<div class="relative overflow-hidden rounded-2xl bg-surface-dark shadow-xl ring-1 ring-white/10">
+<div class="relative flex flex-col md:flex-row h-full">
+<div class="p-8 md:p-12 flex flex-col justify-center flex-1 order-2 md:order-1 z-10">
+<div class="flex items-center gap-2 mb-4">
+<span class="inline-flex items-center rounded-full bg-blue-400/10 px-2.5 py-0.5 text-xs font-medium text-blue-400 ring-1 ring-inset ring-blue-400/20">Featured</span>
+<span class="text-slate-400 text-sm">Oct 24, 2024</span>
+</div>
+<h1 class="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
+                                The Future of Web Development: What to Expect in 2025
+                            </h1>
+<p class="text-lg text-slate-300 mb-8 max-w-xl">
+                                Explore the emerging trends, tools, and methodologies that are set to redefine how we build for the web in the coming year.
+                            </p>
+<div class="flex items-center gap-4">
+<a class="text-sm font-semibold leading-6 text-white flex items-center gap-1 hover:text-primary transition-colors" href="#">
+                                    Read article <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+<div class="flex items-center gap-2">
+<img alt="Author" class="h-6 w-6 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKze7St2_p_aP9_QTdtAzho1rKffRiFCPLqOWDEiiv3ikfGHzdRZ8wmz8z6FDgnyrOrBosbZUHJHBH7Y-7GcIOF68JQCqEmVK9O-ldDVrOIzniAvT4UO_SJfWWEW00G7JYQNo7TCbWXOqWEjgqVZom63QTEKIOUBUt1kqh1N2yirsNlq3IZ88o75OIIdhIEmkLWGYv2ickTQVoYeE-k7cF3G0s-m7XkhjBT9_qhJOKOckZD_UhQ1J5n44jO96ZM12UbFC92YrCSE4"/>
+<span class="text-sm text-slate-400">Alex Rivers</span>
+</div>
+</div>
+</div>
+<div class="relative h-64 md:h-auto flex-1 order-1 md:order-2 bg-slate-800">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent md:bg-gradient-to-l opacity-80 z-10"></div>
+<img alt="Code editor on dark screen" class="absolute inset-0 h-full w-full object-cover" data-alt="Code editor showing complex code syntax" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxoCzqcIUgQU9rLIgKOK4BEQlDMNEiLDlSO6levDAKRtQKkIbt0g19g3tjwQcaOMLfsPt2hNyLMkN-oP7z3ocwe3WUn7JDxNZqvwEH-M7L4OOCWK3QsUZID6oIZE5KodHakthXe5OWZeci1PQq4JaoCQTpVCFcqRO_AN5Yle-qJj2YTHdEjidPO10qdbmviVH-hrLnhQSWbD_4RffhsXsSwg7-5ZFlJN3HwnCoU1CodxRyqMna2H5qSJg02EtvLMz8O2DspjUVKw8"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Filter Tabs -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4 border-b border-slate-200 dark:border-border-dark pb-2">
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Latest Articles</h2>
+<div class="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto scrollbar-hide">
+<button class="px-3 py-1.5 text-sm font-medium rounded-full bg-primary text-white shadow-sm">All</button>
+<button class="px-3 py-1.5 text-sm font-medium rounded-full text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors whitespace-nowrap">Frontend</button>
+<button class="px-3 py-1.5 text-sm font-medium rounded-full text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors whitespace-nowrap">Backend</button>
+<button class="px-3 py-1.5 text-sm font-medium rounded-full text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors whitespace-nowrap">DevOps</button>
+<button class="px-3 py-1.5 text-sm font-medium rounded-full text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors whitespace-nowrap">AI</button>
+</div>
+</div>
+<!-- Blog Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+<!-- Card 1 -->
+<article class="flex flex-col overflow-hidden rounded-xl bg-white dark:bg-surface-dark shadow-sm ring-1 ring-slate-900/5 dark:ring-white/10 hover:shadow-lg hover:ring-primary/50 dark:hover:ring-primary/50 transition-all duration-300 group">
+<div class="relative h-48 w-full overflow-hidden">
+<img alt="React Logo 3D render" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Abstract 3D rendering representing React JS" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCS5_TnIYC3uvtuFNlD6slplyKCFjfVxs8r3wiI_avScNC3Nj2gVVaB3C6tsjBV80si65JjwKP0TRdIfdvuLUlYJVaYDDuRLAQU24fxXC8bqd9wbhGwx7X0CGzXvQ_pUcurGW1Uh2CQp3FNdQ-q__Ta6MYWSCssYu96OrmymKZPEhaORq_8is4TaxBhFyQhC8Ajij78fEu2HFvyhO-q_XjobSDqpJrZiWG2ZjGbCZ77PlZZYgGAPlhykLUhzAOBs9vI_LY_CBtl6oM"/>
+<div class="absolute top-4 left-4">
+<span class="inline-flex items-center rounded-md bg-slate-900/60 backdrop-blur-sm px-2 py-1 text-xs font-medium text-white ring-1 ring-inset ring-white/20">React</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-6">
+<div class="flex items-center gap-x-4 text-xs text-slate-500 dark:text-slate-400 mb-3">
+<time datetime="2023-10-14">Oct 14, 2024</time>
+<span class="relative z-10 rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 font-medium text-slate-600 dark:text-slate-300">Tutorial</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 5 min read</span>
+</div>
+<h3 class="mt-1 text-lg font-semibold leading-6 text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+<a href="#">Understanding React Server Components</a>
+</h3>
+<p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                            A deep dive into how server components work, why they matter, and how to implement them in your Next.js applications effectively.
+                        </p>
+<div class="mt-6 flex items-center gap-3 pt-4 border-t border-slate-100 dark:border-border-dark">
+<img alt="" class="h-8 w-8 rounded-full bg-slate-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzVmDtV_kPtCB7U5Hd01_VmEy2u7uxWxZwlx9itbssZV-HxyBCK7K4Eu7x3C9fbSi9AbCVMLuFT9TpvjVAPSR_kBJzY_rxzbsgEi4gZrJMjmO__AVrNJTUY_5SVzVJaNrBdGtPdDQ2pPGhnuIxbcd1MGnRT6hDqfxj2m-Vs3Ob-WvLFAqDSz55uqEMbVrGNpZK9MLPicPpAlgjsl3eAqYHlNShvdvr7GjbWmycHyd9Qd_rpi_RyMsBsCVp8ut8IMNZvI7grHPYFYk"/>
+<div class="text-sm leading-6">
+<p class="font-semibold text-slate-900 dark:text-white">Sarah Jenkins</p>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="flex flex-col overflow-hidden rounded-xl bg-white dark:bg-surface-dark shadow-sm ring-1 ring-slate-900/5 dark:ring-white/10 hover:shadow-lg hover:ring-primary/50 dark:hover:ring-primary/50 transition-all duration-300 group">
+<div class="relative h-48 w-full overflow-hidden">
+<img alt="TypeScript code snippet" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Minimalist abstract code lines visualization" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1_eqx0Y7IFa1JxrWFj9Z6qaLQ2_-ambcAG5DnGCObYDUfZzpt7kfSNZ1EieaGiujV7riJcf0xZexED4nV5pNT-oJcjqqIv_Lg-ajcDyCRWVbUnDH_2u-QAwapJJyXvWbUdi0-diMQcb3yos9Lylj_T8Fv54PsZFkhiTasNJ5g7GpeekctCDY1Mo_5mR1zse5SaOaWR5FYfaoJm9yFIO8elsQ4p8i7CLIzlAUcZvWLRMmW4576fxWXVQtDBmHSO3fCmKGkElg32tU"/>
+<div class="absolute top-4 left-4">
+<span class="inline-flex items-center rounded-md bg-slate-900/60 backdrop-blur-sm px-2 py-1 text-xs font-medium text-white ring-1 ring-inset ring-white/20">TypeScript</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-6">
+<div class="flex items-center gap-x-4 text-xs text-slate-500 dark:text-slate-400 mb-3">
+<time datetime="2023-10-12">Oct 12, 2024</time>
+<span class="relative z-10 rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 font-medium text-slate-600 dark:text-slate-300">Guide</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 8 min read</span>
+</div>
+<h3 class="mt-1 text-lg font-semibold leading-6 text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+<a href="#">Advanced TypeScript Generics</a>
+</h3>
+<p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                            Master the art of writing reusable and type-safe code using advanced generic patterns. Learn about conditional types and inference.
+                        </p>
+<div class="mt-6 flex items-center gap-3 pt-4 border-t border-slate-100 dark:border-border-dark">
+<img alt="" class="h-8 w-8 rounded-full bg-slate-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVvoV04o061mu4WMPC7lzw3x-OGLb6VEYasSKX4HYeIzyMqgtRnPOpmN9zYwx2jONaPE8FWKkhyCDjWWu3wdNimCyxgw0QNdndBijanY9S1ab2zxB_hj9pvamxSrtNtA1e_kuHcE2Tf--CU2BbuJjyx-rvXSKu_kdPLwvON9o1-B71f67BrH0ZSjVIKeXyggbDSHU0HHfyb-LihjVniAGTYvxgUba0gHXBkOCDHgfgTVyjndneDkgt44UeqPkHXRtgrTqgOX_O0Q4"/>
+<div class="text-sm leading-6">
+<p class="font-semibold text-slate-900 dark:text-white">Mike Tyson</p>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="flex flex-col overflow-hidden rounded-xl bg-white dark:bg-surface-dark shadow-sm ring-1 ring-slate-900/5 dark:ring-white/10 hover:shadow-lg hover:ring-primary/50 dark:hover:ring-primary/50 transition-all duration-300 group">
+<div class="relative h-48 w-full overflow-hidden">
+<img alt="Docker containers concept" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Shipping containers artistic representation for DevOps" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUZfdI7Nhw0GGWqPs4hk36A_y0u_U8GqJLjp6ISrcEKv3XRuQnEs2TXjlNU05cysi6DTcAQ_tpq2jlqL5K4JuVrIvD9qcv0BsjMJSyzMkcwPOey5ytuaiMu2ZqZdl0gi3oPlE7LBe3uwidDicyzBGzsURtkUYye2IoD7ge14j7c_7WzlfgD10Ng1cl6Rs1OLTr_IBXXRWSzKDg3GEt0t-_OgyyDUbA65XXS5lSJE5ZTGCQQomlXIrD8vAFHBLCySQIydZ0l_GSHJc"/>
+<div class="absolute top-4 left-4">
+<span class="inline-flex items-center rounded-md bg-slate-900/60 backdrop-blur-sm px-2 py-1 text-xs font-medium text-white ring-1 ring-inset ring-white/20">DevOps</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-6">
+<div class="flex items-center gap-x-4 text-xs text-slate-500 dark:text-slate-400 mb-3">
+<time datetime="2023-10-10">Oct 10, 2024</time>
+<span class="relative z-10 rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 font-medium text-slate-600 dark:text-slate-300">DevOps</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 12 min read</span>
+</div>
+<h3 class="mt-1 text-lg font-semibold leading-6 text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+<a href="#">Dockerizing Your Node.js App</a>
+</h3>
+<p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                            A step-by-step guide to creating optimized Docker images for your Node.js applications. Best practices for production included.
+                        </p>
+<div class="mt-6 flex items-center gap-3 pt-4 border-t border-slate-100 dark:border-border-dark">
+<img alt="" class="h-8 w-8 rounded-full bg-slate-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdxtVUd8gP0KAqZggMmF1vea8Jpqcwrat_B_4yTQ-Izecs-WlGVRJdef0hdqKEBQr70wqE_eGgZEOAootlxzbyAN4uKss8E-gijUsTce1VHtvhQ192koeSGt1pkUUwQQXmriOATPRCsPUiCInNA_8doicCw3Gwvrd5cv0rUGTjJ1r4ctXZSywfjUToIVugCBhTNi4N5RnzStk_kedtl6TJf8Zbb0jMOmTEzV1YfdaifQ-D3jeJmQY01s1GVfMdGHf_WuNPNkvXTzs"/>
+<div class="text-sm leading-6">
+<p class="font-semibold text-slate-900 dark:text-white">David Lee</p>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="flex flex-col overflow-hidden rounded-xl bg-white dark:bg-surface-dark shadow-sm ring-1 ring-slate-900/5 dark:ring-white/10 hover:shadow-lg hover:ring-primary/50 dark:hover:ring-primary/50 transition-all duration-300 group">
+<div class="relative h-48 w-full overflow-hidden">
+<img alt="Cybersecurity lock concept" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Digital lock on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBB1qYoz36QyXbKNJdkFT4-ieFuVlCwxs3-z4ih39TpqeUjSeAffHStEK8UNzvFT4g8A27TogELKRmYvzQQwTTdqZnUkMwuY7t9rPjQ9X3pNGBI-K34mdjTIQqwzJi8ie-zmEZamTN7ZQevc20v7eK1Abl31LRbWWnKkscl-qdx1fr2_O6-nKa351nbqt11zA2gvNIeF4il2bPQfqgcM5Pg7mHVVuKjW2s4zYOVsouUFq3r5gu8cDHHMnhCVjR51051V5XvWWFz-8A"/>
+<div class="absolute top-4 left-4">
+<span class="inline-flex items-center rounded-md bg-slate-900/60 backdrop-blur-sm px-2 py-1 text-xs font-medium text-white ring-1 ring-inset ring-white/20">Security</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-6">
+<div class="flex items-center gap-x-4 text-xs text-slate-500 dark:text-slate-400 mb-3">
+<time datetime="2023-10-08">Oct 08, 2024</time>
+<span class="relative z-10 rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 font-medium text-slate-600 dark:text-slate-300">Opinion</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 6 min read</span>
+</div>
+<h3 class="mt-1 text-lg font-semibold leading-6 text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+<a href="#">The State of Web Security in 2024</a>
+</h3>
+<p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                            Security is no longer an afterthought. We discuss the latest vulnerabilities and how to protect your users in a modern landscape.
+                        </p>
+<div class="mt-6 flex items-center gap-3 pt-4 border-t border-slate-100 dark:border-border-dark">
+<img alt="" class="h-8 w-8 rounded-full bg-slate-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr7CuG8XhN-iHJVsO1cRp9DEn69gWNkrW7Q_fYjodiB4DrQFNFnyWJ_WegWGxxi14uCVlAZOMLtVR98N3Y74TjeW9LyhmMC9smwZR89PeqHRva8y8cYyrFMcynSVYJT0k0Jb3ghww8IEJrlpH-2L8WfZfDaVsKEZUk2h0clbRdyMqiItXGIIOKl9tk82M6kizp9G2-Hz04nlGAcOFZwbZCAc6e9NVn-S77XbVwp5lgdgS1UxvlUAcLjtzZBcCxqUJTLQoNNPskkQs"/>
+<div class="text-sm leading-6">
+<p class="font-semibold text-slate-900 dark:text-white">Emily Rose</p>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 5 -->
+<article class="flex flex-col overflow-hidden rounded-xl bg-white dark:bg-surface-dark shadow-sm ring-1 ring-slate-900/5 dark:ring-white/10 hover:shadow-lg hover:ring-primary/50 dark:hover:ring-primary/50 transition-all duration-300 group">
+<div class="relative h-48 w-full overflow-hidden">
+<img alt="Server room with lights" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Data center corridor with blue lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV2zoxixlAV8mbZgaV2tPeWguVe2aQwR-ZKmbRd8YjHGGIQgAm1W3IEKtmuMiVNdvKLlndJTMLe1FWj2uRDbX6Y638B4FUu9kuhmGORhcMxYWxgE_IS9k2rl0u_0Z5pcUWr8JLiHKJlDlmlAhBmLCuaWCCmGXGnyAghT6btPNTKbLuSS0hINmaoTwjkUAEEiRU4QGSkHAXbYY3P5mADQIIt2ijDAHp3v8nilf1QE5ZEeUVIN9MvW1SeX-f8j2Z3-DPcotr1UDK7ro"/>
+<div class="absolute top-4 left-4">
+<span class="inline-flex items-center rounded-md bg-slate-900/60 backdrop-blur-sm px-2 py-1 text-xs font-medium text-white ring-1 ring-inset ring-white/20">Backend</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-6">
+<div class="flex items-center gap-x-4 text-xs text-slate-500 dark:text-slate-400 mb-3">
+<time datetime="2023-10-05">Oct 05, 2024</time>
+<span class="relative z-10 rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 font-medium text-slate-600 dark:text-slate-300">Tutorial</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 15 min read</span>
+</div>
+<h3 class="mt-1 text-lg font-semibold leading-6 text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+<a href="#">Building Scalable APIs with Go</a>
+</h3>
+<p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                            Go is the language of the cloud. Learn how to structure your Go projects for scalability and maintainability.
+                        </p>
+<div class="mt-6 flex items-center gap-3 pt-4 border-t border-slate-100 dark:border-border-dark">
+<img alt="" class="h-8 w-8 rounded-full bg-slate-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiCdh0NBtyXfa50baJG_ixDEpyhCCX-YDfJydFt1h-2Bf1eS5xkVybjK27nCx3OQh25_vAKHOlKBPa1jrSweKVCZ2vBnxEmZZIjnYrQpGm7zTFgfMHGP9ScN5KfI1Yqoazkt6NeHMu597zo82pHdMWtsz1YbOj_WTCZspV-SAcf-6aHRkuisQENFpiyaPSCfCdDNMq6NWBfGdph7NFCIfw1tHyZyHLnvONfYV209BP9Y6LjVuaM9Dv_7grlYapxp0tgUAfy72AwVQ"/>
+<div class="text-sm leading-6">
+<p class="font-semibold text-slate-900 dark:text-white">Chris Pratt</p>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 6 -->
+<article class="flex flex-col overflow-hidden rounded-xl bg-white dark:bg-surface-dark shadow-sm ring-1 ring-slate-900/5 dark:ring-white/10 hover:shadow-lg hover:ring-primary/50 dark:hover:ring-primary/50 transition-all duration-300 group">
+<div class="relative h-48 w-full overflow-hidden">
+<img alt="Abstract fluid colors" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Colorful abstract gradients mixing together" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuCpT4jAjSkHc5cPWkGtTTF-Z2FNophvqddTfRBXZZ0dwIQg5qa5Wrqv-1pquDEBA1lkOe_8A6157N5b2gPA6Eu5YDXiZ67xCB66v91_hDiyHxgHVm28uqMvZ_1rltl9w4XnptFov3cPbqnwB_LwvNG8xE6t5XQnmke4mBaG6RxBxLjiXBMwTDJHD1hdOSlCK7dCGe6qzeKawYxQX6wfFIJo3pMunDzE7s5d1CRE68hAKk3p1LIGJ7V8Wst8KE6nXBgXMR-yMZrIc"/>
+<div class="absolute top-4 left-4">
+<span class="inline-flex items-center rounded-md bg-slate-900/60 backdrop-blur-sm px-2 py-1 text-xs font-medium text-white ring-1 ring-inset ring-white/20">Design</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col p-6">
+<div class="flex items-center gap-x-4 text-xs text-slate-500 dark:text-slate-400 mb-3">
+<time datetime="2023-10-01">Oct 01, 2024</time>
+<span class="relative z-10 rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 font-medium text-slate-600 dark:text-slate-300">Design</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 4 min read</span>
+</div>
+<h3 class="mt-1 text-lg font-semibold leading-6 text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+<a href="#">UI Trends: Dark Mode &amp; Neomorphism</a>
+</h3>
+<p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                            Analyzing the staying power of dark mode and the subtle resurgence of neomorphic elements in modern interfaces.
+                        </p>
+<div class="mt-6 flex items-center gap-3 pt-4 border-t border-slate-100 dark:border-border-dark">
+<img alt="" class="h-8 w-8 rounded-full bg-slate-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpxvJpDmKctlk4Qior6BAXS-SBO-24oz5OeWZr2PwlkSEeyHjllcU3Up1ZERgRy9wpQHR_jg9sFmsyuXrYpL1p_W9m95ZGxEDQPRt1CPtqKonUCO7BovW5cmQEiEQ1QiFRFxgelE-QFB3CzGpsUZqfZPeH6ASQJyEhmP-Iyhbab0da4DSMYX0oCQq5kXmm2EfiphcNOnxWicTeefAhTaEoJz3uXwpysMssgGLMLdUn9gJcE5w8YXIgkutOd042_enaE-PYps8Sv14"/>
+<div class="text-sm leading-6">
+<p class="font-semibold text-slate-900 dark:text-white">Anna Klein</p>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Pagination -->
+<nav class="flex items-center justify-between border-t border-slate-200 dark:border-border-dark px-4 sm:px-0 mt-8">
+<div class="-mt-px flex w-0 flex-1">
+<a class="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-slate-500 hover:border-slate-300 hover:text-slate-700 dark:text-slate-400 dark:hover:border-slate-500 dark:hover:text-slate-200 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-lg">arrow_back</span>
+                        Previous
+                    </a>
+</div>
+<div class="hidden md:-mt-px md:flex">
+<a class="inline-flex items-center border-t-2 border-primary px-4 pt-4 text-sm font-medium text-primary" href="#">1</a>
+<a class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-slate-500 hover:border-slate-300 hover:text-slate-700 dark:text-slate-400 dark:hover:border-slate-500 dark:hover:text-slate-200" href="#">2</a>
+<a class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-slate-500 hover:border-slate-300 hover:text-slate-700 dark:text-slate-400 dark:hover:border-slate-500 dark:hover:text-slate-200" href="#">3</a>
+<span class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-slate-500 dark:text-slate-400">...</span>
+<a class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-slate-500 hover:border-slate-300 hover:text-slate-700 dark:text-slate-400 dark:hover:border-slate-500 dark:hover:text-slate-200" href="#">10</a>
+</div>
+<div class="-mt-px flex w-0 flex-1 justify-end">
+<a class="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-slate-500 hover:border-slate-300 hover:text-slate-700 dark:text-slate-400 dark:hover:border-slate-500 dark:hover:text-slate-200 transition-colors" href="#">
+                        Next
+                        <span class="material-symbols-outlined ml-3 text-lg">arrow_forward</span>
+</a>
+</div>
+</nav>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-white dark:bg-background-dark border-t border-slate-200 dark:border-border-dark mt-auto">
+<div class="mx-auto max-w-[1280px] overflow-hidden px-6 py-12 sm:py-16 lg:px-8">
+<div class="flex flex-col items-center justify-center gap-6 mb-8">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-3xl">terminal</span>
+</div>
+<nav aria-label="Footer" class="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12">
+<div class="pb-6">
+<a class="text-sm leading-6 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white" href="#">Blog</a>
+</div>
+<div class="pb-6">
+<a class="text-sm leading-6 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white" href="#">Newsletter</a>
+</div>
+<div class="pb-6">
+<a class="text-sm leading-6 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white" href="#">Jobs</a>
+</div>
+<div class="pb-6">
+<a class="text-sm leading-6 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white" href="#">Privacy</a>
+</div>
+</nav>
+</div>
+<p class="mt-10 text-center text-xs leading-5 text-slate-500 dark:text-slate-400">
+                © 2024 DevBlog Platform, Inc. All rights reserved.
+            </p>
+</div>
+</footer>
+</body></html>
