@@ -45,7 +45,7 @@ export default function Hero({ post }: HeroProps) {
                     </p>
 
                     <div className="flex items-center justify-between">
-                        <Link href={`#`} className="group flex items-center gap-2 text-sm font-bold text-white transition-colors hover:text-blue-400">
+                        <Link href={`/posts/${post.id}`} className="group flex items-center gap-2 text-sm font-bold text-white transition-colors hover:text-blue-400">
                             Read article <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </Link>
                     </div>

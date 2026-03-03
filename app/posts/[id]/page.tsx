@@ -1,0 +1,167 @@
+import Image from "next/image";
+import Link from "next/link";
+import { format } from "date-fns";
+import { ArrowLeft } from "lucide-react";
+import { createClient } from "@/utils/supabase/server";
+import { notFound } from "next/navigation";
+import ShareButtons from "./ShareButtons";
+import PostCard from "@/components/PostCard";
+import CommentSection from "@/components/CommentSection";
+
+// 더미 저자 데이터 (DB 스키마에 없으므로 시안 구현용으로 작성)
+const DUMMY_AUTHOR = {
+    name: "Sarah Jenkins",
+    avatar: "https://i.pravatar.cc/150?u=sarah",
+    readTime: "8 min read"
+};
+
+interface PostDetailPageProps {
+    params: {
+        id: string;
+    }
+}
+
+export default async function PostDetailPage({ params }: PostDetailPageProps) {
+    // URL을 통해 넘겨받은 {id} 값을 사용
+    const { id } = await params;
+
+    // Supabase 서버 클라이언트를 이용해 데이터 조회
+    const supabase = await createClient();
+    const { data: post, error } = await supabase
+        .from("posts")
+        .select("*, category:categories(name)")
+        .eq("id", id)
+        .single();
+
+    if (error || !post) {
+        notFound();
+    }
+
+    // 전체 포스트 ID를 생성일과 ID 기준 내림차순(최신순)으로 조회하여 정렬 순서를 확보합니다.
+    // (시드 데이터처럼 created_at이 완전히 동일한 경우를 대비해 id 정렬 추가)
+    const { data: allPosts } = await supabase
+        .from("posts")
+        .select("id")
+        .order("created_at", { ascending: false })
+        .order("id", { ascending: false });
+
+    let relatedPosts: any[] = [];
+    if (allPosts && allPosts.length > 0) {
+        const currentIndex = allPosts.findIndex(p => p.id === id);
+
+        if (currentIndex !== -1) {
+            const relatedIds = [];
+
+            // 이전 글 (최신 방향): 인덱스가 더 작은 것들
+            if (currentIndex > 0) relatedIds.push(allPosts[currentIndex - 1].id);
+            if (currentIndex > 1) relatedIds.push(allPosts[currentIndex - 2].id);
+
+            // 다음 글 (과거 방향): 인덱스가 더 큰 것들
+            if (currentIndex < allPosts.length - 1) relatedIds.push(allPosts[currentIndex + 1].id);
+            if (currentIndex < allPosts.length - 2) relatedIds.push(allPosts[currentIndex + 2].id);
+
+            // 해당 ID들을 가진 포스트 상세 정보 조회
+            if (relatedIds.length > 0) {
+                const { data } = await supabase
+                    .from("posts")
+                    .select("*, category:categories(name)")
+                    .in("id", relatedIds);
+
+                // 원래 원했던 정렬 순서(최신순 -> 과거순)대로 다시 정렬
+                if (data) {
+                    relatedPosts = relatedIds.map(rId => data.find(d => d.id === rId)).filter(Boolean);
+                }
+            }
+        }
+    }
+
+    // 작성된 댓글 조회 (과거순 정렬)
+    const { data: comments } = await supabase
+        .from("comments")
+        .select("*")
+        .eq("post_id", id)
+        .order("created_at", { ascending: true });
+
+    return (
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 mt-8">
+            <Link
+                href="/"
+                className="inline-flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors mb-8"
+            >
+                <ArrowLeft className="h-4 w-4" /> Back to Home
+            </Link>
+
+            <article>
+                <header className="mb-10">
+                    <div className="flex items-center gap-3 mb-6">
+                        {post.category?.name && (
+                            <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-400 uppercase tracking-wider">
+                                {post.category.name}
+                            </span>
+                        )}
+                    </div>
+
+                    <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white leading-[1.15] mb-8">
+                        {post.title}
+                    </h1>
+
+                    <div className="flex items-center justify-between border-b border-white/10 pb-8">
+                        <div className="flex items-center gap-4">
+                            <Image
+                                src={DUMMY_AUTHOR.avatar}
+                                alt={DUMMY_AUTHOR.name}
+                                width={48}
+                                height={48}
+                                className="rounded-full object-cover ring-2 ring-slate-800"
+                            />
+                            <div>
+                                <div className="font-semibold text-white text-base">
+                                    {DUMMY_AUTHOR.name}
+                                </div>
+                                <div className="flex items-center gap-2 text-sm text-slate-400 mt-0.5">
+                                    <span>{post.created_at ? format(new Date(post.created_at), 'MMM dd, yyyy') : ''}</span>
+                                    <span>•</span>
+                                    <span>{DUMMY_AUTHOR.readTime}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ShareButtons />
+                    </div>
+                </header>
+
+                {post.image_url && (
+                    <div className="relative w-full aspect-[2/1] rounded-2xl overflow-hidden mb-12 bg-slate-800 border border-white/5">
+                        <Image
+                            src={post.image_url}
+                            alt={post.title}
+                            fill
+                            className="object-cover"
+                            priority
+                        />
+                    </div>
+                )}
+
+                <div className="prose prose-invert prose-lg max-w-none prose-p:leading-relaxed prose-p:text-slate-300 prose-headings:text-white prose-a:text-blue-400 hover:prose-a:text-blue-300 prose-img:rounded-xl">
+                    <p className="whitespace-pre-wrap">{post.content}</p>
+                </div>
+            </article>
+
+            {/* 댓글 영역 */}
+            <div className="mt-16">
+                <CommentSection postId={id} initialComments={comments || []} />
+            </div>
+
+            {relatedPosts.length > 0 && (
+                <div className="mt-20 pt-10 border-t border-white/10">
+                    <h2 className="text-2xl font-bold text-white mb-8">추가로 읽어볼 만한 글</h2>
+                    <div className="grid gap-8 sm:grid-cols-2">
+                        {relatedPosts.map((relatedPost) => (
+                            <PostCard key={relatedPost.id} post={relatedPost} />
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
