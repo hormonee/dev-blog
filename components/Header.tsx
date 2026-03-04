@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import { logout } from "@/app/login/actions";
+import { Suspense } from "react";
+import HeaderSearch from "./HeaderSearch";
 
 export default async function Header() {
     const supabase = await createClient();
@@ -28,19 +29,10 @@ export default async function Header() {
                 </div>
 
                 <div className="flex items-center gap-6">
-                    <div className="relative hidden lg:block">
-                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                            <Search className="h-4 w-4 text-slate-400" />
-                        </div>
-                        <input
-                            type="text"
-                            className="block w-64 rounded-xl border border-white/10 bg-white/5 py-1.5 pl-10 pr-3 text-sm text-white placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            placeholder="Search articles, tags..."
-                        />
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                            <span className="text-xs text-slate-500 border border-white/10 rounded px-1.5 py-0.5">⌘K</span>
-                        </div>
-                    </div>
+                    {/* 검색바 — useSearchParams 때문에 Suspense로 감쌈 */}
+                    <Suspense fallback={<div className="hidden lg:block w-64 h-8 rounded-xl bg-white/5 border border-white/10 animate-pulse" />}>
+                        <HeaderSearch />
+                    </Suspense>
 
                     <div className="flex items-center gap-4">
                         {user ? (

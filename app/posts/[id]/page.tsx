@@ -87,10 +87,10 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
     // 현재 로그인 유저 확인
     const { data: { user } } = await supabase.auth.getUser();
 
-    // 작성된 댓글 조회 (과거순 정렬)
+    // 작성된 댓글 조회 (과거순 정렬, parent_id 포함)
     const { data: comments } = await supabase
         .from("comments")
-        .select("*")
+        .select("id, user_id, author_name, content, created_at, parent_id")
         .eq("post_id", id)
         .order("created_at", { ascending: true });
 
