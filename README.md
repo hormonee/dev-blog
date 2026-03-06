@@ -1,9 +1,12 @@
-![dev-blog-overview-img](./design/dev-blog-overview.png)
-
 # DevBlog
 
 > **마크다운 기반 풀스택 개발 블로그 플랫폼**  
 > Next.js 16 App Router + Supabase + TypeScript
+
+<br/>
+
+## 📸 Screenshots
+![dev-blog-overview-img](./design/dev-blog-overview.png)
 
 <br/>
 
