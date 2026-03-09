@@ -5,7 +5,7 @@
 
 <br/>
 
-## 📸 Screenshots
+## 📸 Preview
 ![dev-blog-overview-img](./design/dev-blog-overview.png)
 
 <br/>
